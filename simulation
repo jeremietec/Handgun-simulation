@@ -1,0 +1,58 @@
+% Constants
+m = 0.1; % mass of the bullet (kg)
+k = 1000; % spring constant (N/m)
+b = 10; % damping coefficient (Ns/m)
+F = 100; % force applied to the bullet (N)
+x0 = 0.1; % initial displacement of the bullet (m)
+v0 = 0; % initial velocity of the bullet (m/s)
+
+% Simulation parameters
+tStart = 0; % start time (s)
+tEnd = 1; % end time (s)
+dt = 0.001; % time step (s)
+% Initialization
+t = tStart:dt:tEnd;
+x = zeros(size(t));
+v = zeros(size(t));
+x(1) = x0;
+v(1) = v0;
+% Simulation loop
+for i = 2:numel(t)
+    % Calculate acceleration
+    a = (F - k * x(i-1) - b * v(i-1)) / m;
+    
+    % Update velocity and displacement
+    v(i) = v(i-1) + a * dt;
+    x(i) = x(i-1) + v(i) * dt;
+end
+
+% Plotting the results
+figure;
+plot(t, x);
+xlabel('Time (s)');
+ylabel('Displacement (m)');
+title('Gun Simulation');
+
+% Additional parameters for shooting from -π to π
+theta = linspace(-pi, pi, numel(t)); % angles from -π to π
+distance = x .* cos(theta); % distance traveled by the bullet
+
+% Plotting the distance traveled by the bullet
+figure;
+plot(theta, distance);
+xlabel('Angle (radians)');
+ylabel('Distance (m)');
+title('Bullet Distance vs. Angle');
+
+% Additional parameters for shooting at an angle of 90 degrees
+angle = pi/2; % angle of 90 degrees
+distance_90 = x .* sin(angle); % distance traveled by the bullet at 90 degrees
+
+% Plotting the distance traveled by the bullet at 90 degrees
+figure;
+plot(t, distance_90);
+xlabel('Time (s)');
+ylabel('Distance (m)');
+title('Bullet Distance vs. Time at 90 Degrees');
+
+
